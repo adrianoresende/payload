@@ -1,13 +1,7 @@
 import type { Field } from 'payload'
 
-import {
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 import { linkGroup } from '@/fields/linkGroup'
+import { mediaGroup } from '@/fields/mediaGroup'
 
 export const hero: Field = {
   name: 'hero',
@@ -16,7 +10,7 @@ export const hero: Field = {
     {
       name: 'type',
       type: 'select',
-      defaultValue: 'lowImpact',
+      defaultValue: 'default',
       label: 'Type',
       options: [
         {
@@ -24,34 +18,31 @@ export const hero: Field = {
           value: 'none',
         },
         {
-          label: 'High Impact',
-          value: 'highImpact',
+          label: 'Highlight Dots',
+          value: 'highlight',
         },
         {
-          label: 'Medium Impact',
-          value: 'mediumImpact',
-        },
-        {
-          label: 'Low Impact',
-          value: 'lowImpact',
+          label: 'Default',
+          value: 'default',
         },
       ],
       required: true,
     },
     {
-      name: 'richText',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: false,
+      name: 'badge',
+      type: 'text',
+      label: 'Badge',
+    },
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      required: true,
+    },
+    {
+      name: 'description',
+      type: 'text',
+      label: 'Description',
     },
     linkGroup({
       overrides: {
@@ -60,13 +51,65 @@ export const hero: Field = {
     }),
     {
       name: 'media',
-      type: 'upload',
+      type: 'group',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        hideGutter: true,
       },
-      relationTo: 'media',
-      required: true,
+      fields: [
+        {
+          name: 'type',
+          type: 'radio',
+          admin: {
+            layout: 'horizontal',
+            width: '50%',
+          },
+          defaultValue: 'upload',
+          options: [
+            {
+              label: 'Media upload',
+              value: 'upload',
+            },
+            {
+              label: 'Youtube URL',
+              value: 'youtube',
+            },
+          ],
+        },
+        // {
+        //   name: 'upload',
+        //   type: 'upload',
+        //   admin: {
+        //     condition: (_, siblingData) => siblingData?.type === 'upload',
+        //   },
+        //   label: 'Upload',
+        //   relationTo: 'media',
+        // },
+        // {
+        //   name: 'youtube',
+        //   type: 'text',
+        //   admin: {
+        //     condition: (_, siblingData) => siblingData?.type === 'youtube',
+        //   },
+        //   label: 'Youtube URL',
+        // },
+      ],
     },
   ],
   label: false,
 }
+
+// {
+//   name: 'richText',
+//   type: 'richText',
+//   editor: lexicalEditor({
+//     features: ({ rootFeatures }) => {
+//       return [
+//         ...rootFeatures,
+//         HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+//         FixedToolbarFeature(),
+//         InlineToolbarFeature(),
+//       ]
+//     },
+//   }),
+//   label: false,
+// },
