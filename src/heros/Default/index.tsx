@@ -22,7 +22,7 @@ export const DefaultHero: React.FC<Page['hero']> = ({
   })
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="h-screen min-h-[740px] max-h-[940px] flex items-center justify-center">
       <div className="max-w-screen-xl w-full mx-auto grid lg:grid-cols-2 gap-12 px-6 py-12">
         <div>
           {badge && (
@@ -46,14 +46,14 @@ export const DefaultHero: React.FC<Page['hero']> = ({
           )}
         </div>
 
-        {/* {media && media.type === 'upload' && media.upload && (
+        {media && media.type === 'upload' && media.upload && (
           <div className="w-full aspect-video bg-accent rounded-xl">
             <Media fill imgClassName="-z-10 object-cover" priority resource={media.upload} />
           </div>
         )}
 
         {media && media.type === 'youtube' && media.youtube && (
-          <div className="w-full aspect-video bg-accent rounded-xl">
+          <div className="w-full aspect-video bg-accent rounded-xl relative">
             <iframe
               width="100%"
               height="100%"
@@ -65,7 +65,7 @@ export const DefaultHero: React.FC<Page['hero']> = ({
               className="absolute inset-0"
             ></iframe>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   )

@@ -102,10 +102,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    theme: Theme;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    theme: ThemeSelect<false> | ThemeSelect<true>;
   };
   locale: null;
   user: User & {
@@ -178,6 +180,8 @@ export interface Page {
       | null;
     media?: {
       type?: ('upload' | 'youtube') | null;
+      upload?: (string | null) | Media;
+      youtube?: string | null;
     };
   };
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
@@ -1001,6 +1005,8 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               type?: T;
+              upload?: T;
+              youtube?: T;
             };
       };
   layout?:
@@ -1549,6 +1555,31 @@ export interface Header {
         id?: string | null;
       }[]
     | null;
+  navButtons?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  search?: boolean | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1583,6 +1614,16 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme".
+ */
+export interface Theme {
+  id: string;
+  themeRadio?: ('0' | '4px' | '8px' | '12px' | '999px') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1600,6 +1641,22 @@ export interface HeaderSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  navButtons?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        id?: T;
+      };
+  search?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1623,6 +1680,16 @@ export interface FooterSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme_select".
+ */
+export interface ThemeSelect<T extends boolean = true> {
+  themeRadio?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

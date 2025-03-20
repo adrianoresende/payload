@@ -1,11 +1,11 @@
-import type { ArrayField, Field } from 'payload'
+import type { ArrayField, Field, GroupField } from 'payload'
 
 import deepMerge from '@/utilities/deepMerge'
 
-type MediaGroupType = (options?: { overrides?: Partial<ArrayField> }) => Field
+type MediaGroupType = (options?: { overrides?: Partial<ArrayField> }) => GroupField
 
-export const mediaGroup: MediaGroupType = ({ overrides = {} } = {}) => {
-  const generatedMediaGroup: Field = {
+export const mediaGroup: MediaGroupType = () => {
+  const generatedMediaGroup: GroupField = {
     name: 'media',
     type: 'group',
     admin: {
@@ -13,7 +13,7 @@ export const mediaGroup: MediaGroupType = ({ overrides = {} } = {}) => {
     },
     fields: [
       {
-        name: 'media-type',
+        name: 'type',
         type: 'radio',
         admin: {
           layout: 'horizontal',
@@ -31,25 +31,25 @@ export const mediaGroup: MediaGroupType = ({ overrides = {} } = {}) => {
           },
         ],
       },
-      // {
-      //   name: 'upload',
-      //   type: 'upload',
-      //   admin: {
-      //     condition: (_, siblingData) => siblingData?.type === 'upload',
-      //   },
-      //   label: 'Upload',
-      //   relationTo: 'media',
-      // },
-      // {
-      //   name: 'youtube',
-      //   type: 'text',
-      //   admin: {
-      //     condition: (_, siblingData) => siblingData?.type === 'youtube',
-      //   },
-      //   label: 'Youtube URL',
-      // },
+      {
+        name: 'upload',
+        type: 'upload',
+        admin: {
+          condition: (_, siblingData) => siblingData?.type === 'upload',
+        },
+        label: 'Upload',
+        relationTo: 'media',
+      },
+      {
+        name: 'youtube',
+        type: 'text',
+        admin: {
+          condition: (_, siblingData) => siblingData?.type === 'youtube',
+        },
+        label: 'Youtube URL',
+      },
     ],
   }
 
-  return deepMerge(generatedMediaGroup, overrides)
+  return generatedMediaGroup
 }

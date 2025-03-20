@@ -25,6 +25,23 @@ export const Header: GlobalConfig = {
         },
       },
     },
+    {
+      name: 'navButtons',
+      type: 'array',
+      fields: [link()],
+      maxRows: 3,
+      admin: {
+        initCollapsed: true,
+        components: {
+          RowLabel: '@/Header/RowLabel#RowLabel',
+        },
+      },
+    },
+    {
+      name: 'search',
+      type: 'checkbox',
+      defaultValue: false,
+    },
   ],
   hooks: {
     afterChange: [revalidateHeader],
